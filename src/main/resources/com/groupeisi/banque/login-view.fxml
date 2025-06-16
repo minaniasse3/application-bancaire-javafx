@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<BorderPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.groupeisi.banque.controllers.LoginController">
+    <top>
+        <HBox alignment="CENTER" style="-fx-background-color: #0D6EFD;">
+            <padding>
+                <Insets bottom="20" top="20" />
+            </padding>
+            <Label text="Système Bancaire" textFill="WHITE">
+                <font>
+                    <Font name="System Bold" size="24.0" />
+                </font>
+            </Label>
+        </HBox>
+    </top>
+    <center>
+        <VBox alignment="CENTER" spacing="20">
+            <padding>
+                <Insets bottom="20" left="20" right="20" top="20" />
+            </padding>
+            <Label style="-fx-font-size: 18px;" text="Connexion" />
+            <Label style="-fx-font-size: 14px; -fx-text-fill: #555555;" text="Entrez vos identifiant pour pouvoir vous connecter." textAlignment="CENTER" wrapText="true" />
+            <TextField fx:id="usernameField" prefWidth="300" promptText="Email" />
+            <PasswordField fx:id="passwordField" prefWidth="300" promptText="Mot de passe" />
+            <Button fx:id="loginButton" onAction="#handleLogin" style="-fx-background-color: #0D6EFD; -fx-text-fill: white;" text="Se connecter" />
+            <HBox alignment="CENTER" spacing="10">
+                <Button fx:id="registerButton" onAction="#handleRegister" style="-fx-background-color: transparent; -fx-text-fill: #0D6EFD;" text="S'inscrire" />
+            </HBox>
+        </VBox>
+    </center>
+</BorderPane>
