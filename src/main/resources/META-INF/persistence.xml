@@ -1,0 +1,33 @@
+<persistence xmlns="http://xmlns.jcp.org/xml/ns/persistence"
+             version="2.2">
+
+    <persistence-unit name="banquePU">
+        <provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
+        <class>com.groupeisi.banque.entities.client</class>
+        <class>com.groupeisi.banque.entities.compte</class>
+        <class>com.groupeisi.banque.entities.credit</class>
+        <class>com.groupeisi.banque.entities.admin</class>
+        <class>com.groupeisi.banque.entities.carteBancaire</class>
+        <class>com.groupeisi.banque.entities.ticketSupport</class>
+        <class>com.groupeisi.banque.entities.transaction</class>
+        <class>com.groupeisi.banque.entities.remboursement</class>
+        <class>com.groupeisi.banque.entities.fraisBancaire</class>
+
+        <properties>
+            <!-- Configuration de la base de données MySQL avec Docker -->
+            <property name="jakarta.persistence.jdbc.driver" value="com.mysql.cj.jdbc.Driver"/>
+            <property name="jakarta.persistence.jdbc.url" value="jdbc:mysql://127.0.0.1:3306/banque?serverTimezone=UTC&amp;createDatabaseIfNotExist=true"/>
+            <property name="jakarta.persistence.jdbc.user" value="root"/>
+            <property name="jakarta.persistence.jdbc.password" value=""/>
+
+            <!-- Propriétés Hibernate pour MySQL -->
+            <property name="hibernate.dialect" value="org.hibernate.dialect.MySQLDialect"/>
+            <property name="hibernate.hbm2ddl.auto" value="update"/> <!-- ou 'create', 'validate', etc. -->
+            <property name="hibernate.show_sql" value="true"/>
+            <property name="hibernate.format_sql" value="true"/>
+            
+            <!-- Propriété pour la création automatique de la base si elle n'existe pas -->
+            <property name="hibernate.connection.autocommit" value="true"/>
+        </properties>
+    </persistence-unit>
+</persistence>
