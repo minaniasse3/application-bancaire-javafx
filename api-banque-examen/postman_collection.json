@@ -1,0 +1,66 @@
+{
+    "info": {
+        "name": "API Bancaire",
+        "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+    },
+    "item": [
+        {
+            "name": "Clients",
+            "item": [
+                {
+                    "name": "Liste des clients",
+                    "request": {
+                        "method": "GET",
+                        "url": "http://127.0.0.1:8000/api/clients"
+                    }
+                },
+                {
+                    "name": "Créer un client",
+                    "request": {
+                        "method": "POST",
+                        "url": "http://127.0.0.1:8000/api/clients",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n    \"nom\": \"Test\",\n    \"prenom\": \"User\",\n    \"email\": \"test@example.com\",\n    \"telephone\": \"0123456789\",\n    \"adresse\": \"123 rue test\",\n    \"dateInscription\": \"2024-03-19\",\n    \"statut\": \"ACTIF\"\n}"
+                        }
+                    }
+                }
+            ]
+        },
+        {
+            "name": "Comptes",
+            "item": [
+                {
+                    "name": "Liste des comptes",
+                    "request": {
+                        "method": "GET",
+                        "url": "http://127.0.0.1:8000/api/comptes"
+                    }
+                },
+                {
+                    "name": "Créer un compte",
+                    "request": {
+                        "method": "POST",
+                        "url": "http://127.0.0.1:8000/api/comptes",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n    \"client_id\": 1,\n    \"numero\": \"FR123456789012\",\n    \"solde\": 1000.00,\n    \"type\": \"COURANT\",\n    \"statut\": \"ACTIF\",\n    \"dateOuverture\": \"2024-03-19\"\n}"
+                        }
+                    }
+                }
+            ]
+        }
+    ]
+} 
