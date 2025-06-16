@@ -1,0 +1,335 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<BorderPane prefHeight="700.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.groupeisi.banque.controllers.ClientDashboardController">
+    <top>
+        <VBox>
+            <HBox alignment="CENTER" style="-fx-background-color: #0D6EFD;">
+                <padding>
+                    <Insets bottom="15" left="20" right="20" top="15" />
+                </padding>
+                <Label text="Espace Client - Système Bancaire" textFill="WHITE">
+                    <font>
+                        <Font name="System Bold" size="24.0" />
+                    </font>
+                </Label>
+                <HBox HBox.hgrow="ALWAYS" />
+                <Label fx:id="clientNameLabel" text="Bienvenue, [Nom Client]" textFill="WHITE">
+                    <font>
+                        <Font size="16.0" />
+                    </font>
+                    <HBox.margin>
+                        <Insets right="15" />
+                    </HBox.margin>
+                </Label>
+                <Button fx:id="logoutButton" onAction="#handleLogout" style="-fx-background-color: transparent; -fx-text-fill: white; -fx-border-color: white; -fx-border-radius: 3;" text="Déconnexion">
+                </Button>
+            </HBox>
+        </VBox>
+    </top>
+
+    <left>
+        <!-- Navigation menu vertical à gauche (similaire à l'admin) -->
+        <VBox style="-fx-background-color: #F8F9FA;" alignment="TOP_CENTER" prefWidth="200" spacing="40">
+            <padding>
+                <Insets top="50" bottom="40" left="20" right="20" />
+            </padding>
+            <Button onAction="#showAccounts" style="-fx-background-color: #0D6EFD; -fx-text-fill: white;" text="Mes Comptes" maxWidth="Infinity">
+                <VBox.margin>
+                    <Insets bottom="5" />
+                </VBox.margin>
+            </Button>
+            <Button onAction="#showTransfers" style="-fx-background-color: #0D6EFD; -fx-text-fill: white;" text="Virements" maxWidth="Infinity">
+                <VBox.margin>
+                    <Insets bottom="5" />
+                </VBox.margin>
+            </Button>
+            <Button onAction="#showHistory" style="-fx-background-color: #0D6EFD; -fx-text-fill: white;" text="Historique" maxWidth="Infinity">
+                <VBox.margin>
+                    <Insets bottom="5" />
+                </VBox.margin>
+            </Button>
+            <Button onAction="#showCards" style="-fx-background-color: #0D6EFD; -fx-text-fill: white;" text="Cartes Bancaires" maxWidth="Infinity">
+                <VBox.margin>
+                    <Insets bottom="5" />
+                </VBox.margin>
+            </Button>
+            <Button onAction="#showCredits" style="-fx-background-color: #0D6EFD; -fx-text-fill: white;" text="Crédits" maxWidth="Infinity">
+                <VBox.margin>
+                    <Insets bottom="5" />
+                </VBox.margin>
+            </Button>
+            <Button onAction="#showSupport" style="-fx-background-color: #0D6EFD; -fx-text-fill: white;" text="Support" maxWidth="Infinity">
+            </Button>
+        </VBox>
+    </left>
+
+    <center>
+        <StackPane>
+            <!-- Vue par défaut - Mes Comptes -->
+            <VBox fx:id="accountsView" spacing="20" visible="true">
+                <padding>
+                    <Insets bottom="20" left="20" right="20" top="20" />
+                </padding>
+
+                <HBox alignment="CENTER_LEFT" spacing="15">
+                    <Label style="-fx-font-size: 18px; -fx-font-weight: bold;" text="Mes Comptes" />
+                    <Region HBox.hgrow="ALWAYS" />
+                    <Button onAction="#handleNewAccount" style="-fx-background-color: #198754; -fx-text-fill: white;" text="Nouveau Compte" />
+                </HBox>
+
+                <!-- Ajout de statistiques à l'instar de l'interface admin -->
+                <HBox spacing="20">
+                    <VBox alignment="CENTER" style="-fx-background-color: #F8F9FA; -fx-background-radius: 5;" HBox.hgrow="ALWAYS">
+                        <padding>
+                            <Insets bottom="15" left="15" right="15" top="15" />
+                        </padding>
+                        <Label style="-fx-font-weight: bold;" text="Solde Total" />
+                        <Label fx:id="totalBalanceLabel" style="-fx-font-size: 24px;" text="0.00 XOF" />
+                    </VBox>
+
+                    <VBox alignment="CENTER" style="-fx-background-color: #F8F9FA; -fx-background-radius: 5;" HBox.hgrow="ALWAYS">
+                        <padding>
+                            <Insets bottom="15" left="15" right="15" top="15" />
+                        </padding>
+                        <Label style="-fx-font-weight: bold;" text="Nombre de Comptes" />
+                        <Label fx:id="accountCountLabel" style="-fx-font-size: 24px;" text="0" />
+                    </VBox>
+
+                    <VBox alignment="CENTER" style="-fx-background-color: #F8F9FA; -fx-background-radius: 5;" HBox.hgrow="ALWAYS">
+                        <padding>
+                            <Insets bottom="15" left="15" right="15" top="15" />
+                        </padding>
+                        <Label style="-fx-font-weight: bold;" text="Transactions ce mois" />
+                        <Label fx:id="monthlyTransactionsLabel" style="-fx-font-size: 24px;" text="0" />
+                    </VBox>
+                </HBox>
+
+                <TableView fx:id="accountsTable" VBox.vgrow="ALWAYS">
+                    <columns>
+                        <TableColumn fx:id="accountNumberColumn" prefWidth="200" text="Numéro de compte" />
+                        <TableColumn fx:id="accountTypeColumn" prefWidth="150" text="Type" />
+                        <TableColumn fx:id="accountBalanceColumn" prefWidth="150" text="Solde" />
+                        <TableColumn fx:id="accountDateColumn" prefWidth="150" text="Date de création" />
+                        <TableColumn fx:id="accountActionsColumn" prefWidth="150" text="Actions" />
+                    </columns>
+                </TableView>
+
+                <HBox alignment="CENTER" spacing="20">
+                    <VBox alignment="CENTER" style="-fx-background-color: #F8F9FA; -fx-background-radius: 5;" HBox.hgrow="ALWAYS">
+                        <padding>
+                            <Insets bottom="15" left="15" right="15" top="15" />
+                        </padding>
+                        <Label style="-fx-font-weight: bold;" text="Dépôt" />
+                        <HBox alignment="CENTER" spacing="10">
+                            <TextField fx:id="depositAmountField" prefWidth="150" promptText="Montant" />
+                            <Button onAction="#handleDeposit" style="-fx-background-color: #198754; -fx-text-fill: white;" text="Déposer" />
+                        </HBox>
+                    </VBox>
+
+                    <VBox alignment="CENTER" style="-fx-background-color: #F8F9FA; -fx-background-radius: 5;" HBox.hgrow="ALWAYS">
+                        <padding>
+                            <Insets bottom="15" left="15" right="15" top="15" />
+                        </padding>
+                        <Label style="-fx-font-weight: bold;" text="Retrait" />
+                        <HBox alignment="CENTER" spacing="10">
+                            <TextField fx:id="withdrawAmountField" prefWidth="150" promptText="Montant" />
+                            <Button onAction="#handleWithdraw" style="-fx-background-color: #DC3545; -fx-text-fill: white;" text="Retirer" />
+                        </HBox>
+                    </VBox>
+                </HBox>
+            </VBox>
+
+            <!-- Vue Virements -->
+            <VBox fx:id="transfersView" spacing="20" visible="false">
+                <padding>
+                    <Insets bottom="20" left="20" right="20" top="20" />
+                </padding>
+
+                <HBox alignment="CENTER_LEFT" spacing="15">
+                    <Label style="-fx-font-size: 18px; -fx-font-weight: bold;" text="Effectuer un virement" />
+                    <Region HBox.hgrow="ALWAYS" />
+                </HBox>
+
+                <GridPane hgap="15" vgap="15">
+                    <columnConstraints>
+                        <ColumnConstraints hgrow="SOMETIMES" minWidth="100" prefWidth="200" />
+                        <ColumnConstraints hgrow="SOMETIMES" minWidth="200" prefWidth="300" />
+                    </columnConstraints>
+
+                    <Label text="Compte source :" GridPane.columnIndex="0" GridPane.rowIndex="0" />
+                    <ComboBox fx:id="sourceAccountComboBox" prefWidth="300" GridPane.columnIndex="1" GridPane.rowIndex="0" />
+
+                    <Label text="Compte destination :" GridPane.columnIndex="0" GridPane.rowIndex="1" />
+                    <ComboBox fx:id="destAccountComboBox" prefWidth="300" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+
+                    <Label text="Montant :" GridPane.columnIndex="0" GridPane.rowIndex="2" />
+                    <TextField fx:id="transferAmountField" promptText="Montant" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+
+                    <Label text="Motif :" GridPane.columnIndex="0" GridPane.rowIndex="3" />
+                    <TextField fx:id="transferMotifField" promptText="Motif du virement" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                </GridPane>
+
+                <HBox alignment="CENTER">
+                    <Button onAction="#handleTransfer" style="-fx-background-color: #0D6EFD; -fx-text-fill: white;" text="Effectuer le virement" />
+                </HBox>
+
+                <Separator />
+
+                <Label style="-fx-font-size: 16px; -fx-font-weight: bold;" text="Historique des virements" />
+
+                <TableView fx:id="transfersTable" VBox.vgrow="ALWAYS">
+                    <columns>
+                        <TableColumn fx:id="transferDateColumn" prefWidth="150" text="Date" />
+                        <TableColumn fx:id="transferSourceColumn" prefWidth="200" text="Compte source" />
+                        <TableColumn fx:id="transferDestColumn" prefWidth="200" text="Compte destination" />
+                        <TableColumn fx:id="transferAmountColumn" prefWidth="150" text="Montant" />
+                        <TableColumn fx:id="transferStatusColumn" prefWidth="100" text="Statut" />
+                    </columns>
+                </TableView>
+            </VBox>
+
+            <!-- Vue Historique -->
+            <VBox fx:id="historyView" spacing="20" visible="false">
+                <padding>
+                    <Insets bottom="20" left="20" right="20" top="20" />
+                </padding>
+
+                <HBox alignment="CENTER_LEFT" spacing="15">
+                    <Label style="-fx-font-size: 18px; -fx-font-weight: bold;" text="Historique des transactions" />
+                    <Region HBox.hgrow="ALWAYS" />
+                    <ComboBox fx:id="historyAccountComboBox" promptText="Sélectionner un compte" />
+                    <ComboBox fx:id="historyTypeComboBox" promptText="Type de transaction" />
+                    <DatePicker fx:id="historyStartDatePicker" promptText="Date début" />
+                    <DatePicker fx:id="historyEndDatePicker" promptText="Date fin" />
+                    <Button onAction="#handleFilterHistory" style="-fx-background-color: #0D6EFD; -fx-text-fill: white;" text="Filtrer" />
+                    <Button onAction="#handleExportPDF" style="-fx-background-color: #6C757D; -fx-text-fill: white;" text="Exporter PDF" />
+                </HBox>
+
+                <TableView fx:id="historyTable" VBox.vgrow="ALWAYS">
+                    <columns>
+                        <TableColumn fx:id="historyDateColumn" prefWidth="150" text="Date" />
+                        <TableColumn fx:id="historyTypeColumn" prefWidth="150" text="Type" />
+                        <TableColumn fx:id="historyAccountColumn" prefWidth="200" text="Compte" />
+                        <TableColumn fx:id="historyAmountColumn" prefWidth="150" text="Montant" />
+                        <TableColumn fx:id="historyBalanceColumn" prefWidth="150" text="Solde après" />
+                    </columns>
+                </TableView>
+            </VBox>
+
+            <!-- Vue Cartes Bancaires -->
+            <VBox fx:id="cardsView" spacing="20" visible="false">
+                <padding>
+                    <Insets bottom="20" left="20" right="20" top="20" />
+                </padding>
+
+                <HBox alignment="CENTER_LEFT" spacing="15">
+                    <Label style="-fx-font-size: 18px; -fx-font-weight: bold;" text="Mes Cartes Bancaires" />
+                    <Region HBox.hgrow="ALWAYS" />
+                    <Button onAction="#handleRequestCard" style="-fx-background-color: #198754; -fx-text-fill: white;" text="Demander une carte" />
+                </HBox>
+
+                <TableView fx:id="cardsTable" VBox.vgrow="ALWAYS">
+                    <columns>
+                        <TableColumn fx:id="cardNumberColumn" prefWidth="200" text="Numéro de carte" />
+                        <TableColumn fx:id="cardExpiryColumn" prefWidth="150" text="Date d'expiration" />
+                        <TableColumn fx:id="cardAccountColumn" prefWidth="200" text="Compte associé" />
+                        <TableColumn fx:id="cardStatusColumn" prefWidth="150" text="Statut" />
+                        <TableColumn fx:id="cardActionsColumn" prefWidth="150" text="Actions" />
+                    </columns>
+                </TableView>
+            </VBox>
+
+            <!-- Vue Crédits -->
+            <VBox fx:id="creditsView" spacing="20" visible="false">
+                <padding>
+                    <Insets bottom="20" left="20" right="20" top="20" />
+                </padding>
+
+                <HBox alignment="CENTER_LEFT" spacing="15">
+                    <Label style="-fx-font-size: 18px; -fx-font-weight: bold;" text="Mes Crédits" />
+                    <Region HBox.hgrow="ALWAYS" />
+                    <Button onAction="#handleRequestCredit" style="-fx-background-color: #198754; -fx-text-fill: white;" text="Demander un crédit" />
+                </HBox>
+
+                <TableView fx:id="creditsTable" VBox.vgrow="ALWAYS">
+                    <columns>
+                        <TableColumn fx:id="creditIdColumn" prefWidth="100" text="Référence" />
+                        <TableColumn fx:id="creditAmountColumn" prefWidth="150" text="Montant" />
+                        <TableColumn fx:id="creditRateColumn" prefWidth="100" text="Taux" />
+                        <TableColumn fx:id="creditDurationColumn" prefWidth="100" text="Durée (mois)" />
+                        <TableColumn fx:id="creditMonthlyColumn" prefWidth="150" text="Mensualité" />
+                        <TableColumn fx:id="creditStatusColumn" prefWidth="150" text="Statut" />
+                        <TableColumn fx:id="creditActionsColumn" prefWidth="150" text="Actions" />
+                    </columns>
+                </TableView>
+
+                <Separator />
+
+                <Label style="-fx-font-size: 16px; -fx-font-weight: bold;" text="Simulation de crédit" />
+
+                <GridPane hgap="15" vgap="15">
+                    <columnConstraints>
+                        <ColumnConstraints hgrow="SOMETIMES" minWidth="100" prefWidth="150" />
+                        <ColumnConstraints hgrow="SOMETIMES" minWidth="200" prefWidth="300" />
+                    </columnConstraints>
+
+                    <Label text="Montant :" GridPane.columnIndex="0" GridPane.rowIndex="0" />
+                    <TextField fx:id="simulationAmountField" promptText="Montant souhaité" GridPane.columnIndex="1" GridPane.rowIndex="0" />
+
+                    <Label text="Durée (mois) :" GridPane.columnIndex="0" GridPane.rowIndex="1" />
+                    <Slider fx:id="simulationDurationSlider" majorTickUnit="12" max="120" min="6" minorTickCount="3" showTickLabels="true" showTickMarks="true" value="24" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+
+                    <Label text="Taux d'intérêt :" GridPane.columnIndex="0" GridPane.rowIndex="2" />
+                    <Label fx:id="simulationRateLabel" text="5.0%" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+
+                    <Label text="Mensualité :" GridPane.columnIndex="0" GridPane.rowIndex="3" />
+                    <Label fx:id="simulationMonthlyLabel" text="0.00 XOF" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+
+                    <Label text="Coût total :" GridPane.columnIndex="0" GridPane.rowIndex="4" />
+                    <Label fx:id="simulationTotalLabel" text="0.00 XOF" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+                </GridPane>
+
+                <HBox alignment="CENTER">
+                    <Button onAction="#handleSimulateCredit" style="-fx-background-color: #0D6EFD; -fx-text-fill: white;" text="Calculer" />
+                </HBox>
+            </VBox>
+
+            <!-- Vue Support -->
+            <VBox fx:id="supportView" spacing="20" visible="false">
+                <padding>
+                    <Insets bottom="20" left="20" right="20" top="20" />
+                </padding>
+
+                <HBox alignment="CENTER_LEFT" spacing="15">
+                    <Label style="-fx-font-size: 18px; -fx-font-weight: bold;" text="Support Client" />
+                    <Region HBox.hgrow="ALWAYS" />
+                    <Button onAction="#handleNewTicket" style="-fx-background-color: #198754; -fx-text-fill: white;" text="Nouveau ticket" />
+                </HBox>
+
+                <TableView fx:id="ticketsTable" VBox.vgrow="ALWAYS">
+                    <columns>
+                        <TableColumn fx:id="ticketIdColumn" prefWidth="100" text="Référence" />
+                        <TableColumn fx:id="ticketSubjectColumn" prefWidth="200" text="Sujet" />
+                        <TableColumn fx:id="ticketDateColumn" prefWidth="150" text="Date d'ouverture" />
+                        <TableColumn fx:id="ticketStatusColumn" prefWidth="150" text="Statut" />
+                        <TableColumn fx:id="ticketActionsColumn" prefWidth="150" text="Actions" />
+                    </columns>
+                </TableView>
+            </VBox>
+        </StackPane>
+    </center>
+
+    <bottom>
+        <HBox alignment="CENTER" style="-fx-background-color: #F8F9FA;">
+            <padding>
+                <Insets bottom="10" top="10" />
+            </padding>
+            <Label text="© 2025 Système Bancaire - Tous droits réservés" />
+        </HBox>
+    </bottom>
+</BorderPane>
